@@ -14,8 +14,5 @@ RUN python3 -m pip install --upgrade pip \
 # Copy entire project into container
 COPY . .
 
-# Expose Streamlit port
-EXPOSE 8501
-
-# Run Streamlit app
-CMD ["streamlit", "run", "streamlitApp.py",  "--server.port=8501", "--server.enableCORS", "false"]
+# Run Streamlit app using the Azure-provided PORT
+CMD ["sh", "-c", "streamlit run streamlitApp.py --server.address=0.0.0.0 --server.port=${PORT} --server.enableCORS=false --server.enableXsrfProtection=false"]

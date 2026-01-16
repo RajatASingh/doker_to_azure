@@ -36,7 +36,7 @@ def compute_rfm(df, date_col, customer_col, amount_col):
         date_col: lambda x: (ref_date - x.max()).days,
         customer_col: "count",
         amount_col: "sum"
-    }).rename(columns={ 'customer_name': 'Frequency' }).reset_index()
+    }).rename(columns={ customer_col: 'Frequency' }).reset_index()
 
 
     rfm.columns = ["Customer", "Recency", "Frequency", "Monetary"]
@@ -140,13 +140,13 @@ if uploaded_file:
 
             st.subheader("Top 10 Customers by Sales")
 
-        top_cust = rfm.sort_values("Monetary", ascending=False).head(10)
+        #top_cust = rfm.sort_values("Monetary", ascending=False).head(10)
 
-        fig3 = px.bar(
-            top_cust,
-            x="Customer",
-            y="Monetary",
-            text_auto=True
+        fig3 = px.line(
+            rfm,
+            x=date_col,
+            y= amount_col,
+            #ext_auto=True
         )
 
         st.plotly_chart(fig3, use_container_width=True)
